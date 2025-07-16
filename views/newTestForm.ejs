@@ -1,0 +1,104 @@
+<% layout("./layouts/boilerPlate.ejs") %>
+
+<style>
+  .header-box {
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    color: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .form-card {
+    background: #d9d9d9;
+    border-radius: 15px;
+    padding: 35px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    max-width: 850px;
+    margin: auto;
+  }
+
+  .form-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  textarea,
+  input[type="date"],
+  input[type="number"] {
+    font-family: monospace;
+    font-size: 0.95rem;
+  }
+
+  .submit-btn {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .submit-btn:hover {
+    transform: scale(1.04);
+  }
+
+  .form-icon {
+    font-size: 1.2rem;
+    margin-right: 6px;
+  }
+</style>
+
+<div class="container mt-5">
+  
+  <!-- Gradient Header -->
+  <div class="header-box">
+    <h1 class="display-6 fw-bold">📝 Submit a New NEET Test</h1>
+    <p class="mt-2">Paste answer key and your responses to auto-check your performance</p>
+  </div>
+
+  <!-- Main Form -->
+  <div class="form-card">
+
+    <form action="/submitTest" method="POST">
+
+      <!-- Test Date -->
+      <div class="mb-4">
+        <label for="testDate" class="form-label">
+          <span class="form-icon">📅</span>Test Date:
+        </label>
+        <input type="date" class="form-control" name="testDate" required>
+      </div>
+
+      <!-- Total Questions -->
+      <div class="mb-4">
+        <label for="numOfQues" class="form-label">
+          <span class="form-icon">🔢</span>Total Number of Questions:
+        </label>
+        <input type="number" class="form-control" name="numOfQues" min="1" required>
+      </div>
+
+      <!-- Answer Key -->
+      <div class="mb-4">
+        <label for="correctAnswers" class="form-label">
+          <span class="form-icon">📄</span>Paste Answer Key Array (AI extracted):
+        </label>
+        <textarea class="form-control" name="correctAnswers" rows="4" required placeholder="[1, 2, 3, 4, 1, ...]"></textarea>
+      </div>
+
+      <!-- Your Answers -->
+      <div class="mb-4">
+        <label for="yourAnswers" class="form-label">
+          <span class="form-icon">✍️</span>Your Answer Array (0 = Skipped):
+        </label>
+        <textarea class="form-control" name="yourAnswers" rows="4" required placeholder="[1, 0, 3, 4, 1, ...]"></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-success btn-lg px-5 submit-btn">
+          ✅ Submit Test
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

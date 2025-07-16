@@ -1,0 +1,87 @@
+<% layout("./layouts/boilerPlate") %>
+
+<style>
+  .summary-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fdfdfd;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    padding: 40px;
+  }
+
+  .summary-header h2 {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  .summary-header p {
+    color: #7f8c8d;
+  }
+
+  .summary-details {
+    margin-top: 30px;
+  }
+
+  .summary-details .row {
+    margin-bottom: 20px;
+  }
+
+  .summary-label {
+    font-weight: 600;
+    color: #34495e;
+  }
+
+  .summary-value {
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+
+  .btn-group a {
+    margin-top: 30px;
+  }
+</style>
+
+<div class="summary-container">
+  <div class="summary-header text-center">
+    <h2>✅ Test Submitted</h2>
+    <p>Here is your performance summary</p>
+  </div>
+
+  <div class="summary-details">
+    <div class="row">
+      <div class="col-6 summary-label">📅 Test Date:</div>
+      <div class="col-6 summary-value"><%= test.testDate %></div>
+    </div>
+    <div class="row">
+      <div class="col-6 summary-label">🔢 Total Questions:</div>
+      <div class="col-6 summary-value"><%= test.numOfQues %></div>
+    </div>
+    <div class="row">
+      <div class="col-6 summary-label">✅ Correct:</div>
+      <div class="col-6 summary-value"><%= test.numOfCorrectAns %></div>
+    </div>
+    <div class="row">
+      <div class="col-6 summary-label">❌ Incorrect:</div>
+      <div class="col-6 summary-value"><%= test.numOfIncoreectAns %></div>
+    </div>
+    <div class="row">
+      <div class="col-6 summary-label">⏭ Skipped:</div>
+      <div class="col-6 summary-value"><%= test.numOfSkippedQues %></div>
+    </div>
+    <div class="row">
+      <div class="col-6 summary-label">🎯 Accuracy:</div>
+      <div class="col-6 summary-value"><%= ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1) %>%</div>
+    </div>
+    <div class="row">
+      <div class="col-6 summary-label">🏆 Score:</div>
+      <div class="col-6 summary-value"><%= test.totalMarksObtain %> / <%= test.totalMarks %></div>
+    </div>
+  </div>
+
+  <div class="text-center btn-group">
+    <a href="/tests" class="btn btn-outline-primary">📁 View Previous Tests</a>
+    <a href="/" class="btn btn-outline-secondary ms-3">🏠 Home</a>
+  </div>
+</div>

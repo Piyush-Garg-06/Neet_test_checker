@@ -1,0 +1,65 @@
+<% layout("./layouts/boilerPlate.ejs") %>
+
+<style>
+  .hero {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: white;
+    padding: 60px 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+
+  .action-btn {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .action-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .feature-box {
+    transition: 0.3s ease;
+  }
+
+  .feature-box:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+  }
+</style>
+
+<div class="container mt-5">
+
+  <!-- Hero Section -->
+  <div class="hero text-center mb-5">
+    <h1 class="display-5 fw-bold">👩‍⚕️ NEET Test Checker</h1>
+    <p class="lead mt-3">Check your weekly tests in seconds and track your progress easily.</p>
+    <a href="/newTest" class="btn btn-light btn-lg mt-4 action-btn">
+      ➕ Add New Test
+    </a>
+  </div>
+
+  <!-- Features Section -->
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <div class="card p-4 feature-box h-100">
+        <h4>📷 Upload Answer Key</h4>
+        <p class="text-muted">Paste array from AI-generated answer key (from image/PDF).</p>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card p-4 feature-box h-100">
+        <h4>⌨️ Enter Your Answers</h4>
+        <p class="text-muted">Input your attempted answers directly in array form.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card p-4 feature-box h-100">
+        <h4>📊 Instant Results</h4>
+        <p class="text-muted">Get your score, accuracy & performance analysis instantly.</p>
+      </div>
+    </div>
+  </div>
+
+</div>

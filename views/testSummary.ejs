@@ -1,0 +1,104 @@
+<% layout("./layouts/boilerPlate") %>
+
+<style>
+  body {
+    background: #f1f7ff;
+  }
+
+  .summary-wrapper {
+    padding: 50px;
+  }
+
+  .summary-card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  }
+
+  .summary-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 30px;
+  }
+
+  .list-group-item {
+    font-size: 1.1rem;
+  }
+
+  .review-table {
+    margin-top: 30px;
+  }
+
+  .review-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .review-table th, .review-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ccc;
+  }
+
+  .correct { color: #28a745; font-weight: bold; }
+  .wrong { color: #e74c3c; font-weight: bold; }
+  .skipped { color: #6c757d; font-weight: bold; }
+</style>
+
+<div class="summary-wrapper">
+  <div class="summary-card">
+    <h2 class="summary-title">📝 <%= test.testName ? test.testName : "Unnamed Test" %> – <%= new Date(test.testDate).toLocaleDateString() %></h2>
+
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">✅ Correct Answers: <strong><%= test.numOfCorrectAns %></strong></li>
+      <li class="list-group-item">❌ Incorrect Answers: <strong><%= test.numOfIncoreectAns %></strong></li>
+      <li class="list-group-item">⏭ Skipped Questions: <strong><%= test.numOfSkippedQues %></strong></li>
+      <li class="list-group-item">📊 Total Marks: <strong><%= test.totalMarksObtain %></strong> / <%= test.totalMarks %></li>
+      <li class="list-group-item">🎯 Accuracy: <strong><%= ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1) %>%</strong></li>
+    </ul>
+
+    <div class="review-table mt-5">
+      <h4>📖 Question-by-Question Review</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Q.No</th>
+            <th>Your Answer</th>
+            <th>Correct Answer</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i = 0; i < test.correctAnswers.length; i++) { %>
+            <tr>
+              <td><%= i + 1 %></td>
+              <td><%= test.yourAns[i] ?? "Unanswered" %></td>
+              <td><%= test.correctAnswers[i] %></td>
+              <td>
+                <% if (test.yourAns[i] == null) { %>
+                  <span class="skipped">⏭ Skipped</span>
+                <% } else if (test.yourAns[i] === test.correctAnswers[i]) { %>
+                  <span class="correct">✅ Correct</span>
+                <% } else { %>
+                  <span class="wrong">❌ Wrong</span>
+                <% } %>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+</div>
+<div class="mt-5 d-flex justify-content-center gap-4">
+  <a href="/" class="btn btn-outline-primary btn-lg">
+    🏠 Back to Home
+  </a>
+  <a href="/tests" class="btn btn-outline-success btn-lg">
+    📚 View Previous Tests
+  </a>
+</div>

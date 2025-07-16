@@ -1,0 +1,15 @@
+body{
+    background-color: #242424;
+}
+
+/* nav */
+
+.custom-nav{
+  background: linear-gradient(to right, #aa00ff, #4f00d7) !important;
+  position: sticky !important;
+}
+
+.nav-options{
+    color: white !important;
+    margin-left: 35px;
+}
