@@ -82,11 +82,10 @@
       </div>
 
       <!-- OCR Image Upload -->
-<div class="mb-4">
-  <label for="ocrImage" class="form-label">
-    <span class="form-icon">📷</span> Upload Answer Key Image (optional):
-  </label>
-  <input type="file" class="form-control" id="ocrImage" accept="image/*">
+<div class="form-group">
+  <label for="imageUpload">📷 Upload Answer Key Image</label>
+  <input type="file" id="imageUpload" accept="image/*" class="form-control mb-3">
+  <button type="button" id="extractBtn" class="btn btn-warning btn-sm mt-2">🔍 Extract Correct Answers</button>
 </div>
 
 <!-- OCR Progress -->
