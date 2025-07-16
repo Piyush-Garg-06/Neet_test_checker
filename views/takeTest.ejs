@@ -107,30 +107,14 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
-<script>
-  // Existing Timer Logic
-  let timeLeft = 3 * 60 * 60;
-  function updateTimerDisplay() {
-    let hrs = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
-    let mins = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
-    let secs = String(timeLeft % 60).padStart(2, '0');
-    document.getElementById("timer").textContent = `Time Left: ${hrs}:${mins}:${secs}`;
-  }
-  updateTimerDisplay();
-  const countdown = setInterval(() => {
-    timeLeft--;
-    updateTimerDisplay();
-    if (timeLeft <= 0) {
-      clearInterval(countdown);
-      alert("⏰ Time's up! Submitting your test.");
-      document.getElementById("testForm").submit();
-    }
-  }, 1000);
+<!-- Tesseract.js CDN for OCR -->
+<script type="module">
+  import { createWorker } from 'https://cdn.jsdelivr.net/npm/tesseract.js@5.0.0/+esm';
 
-  // OCR logic
-  document.getElementById("extractBtn").addEventListener("click", async () => {
-    const fileInput = document.getElementById("imageUpload");
+  const extractBtn = document.getElementById("extractBtn");
+  const fileInput = document.getElementById("imageUpload");
+
+  extractBtn.addEventListener("click", async () => {
     const file = fileInput.files[0];
 
     if (!file) {
@@ -142,18 +126,22 @@
     reader.onload = async function (e) {
       const imageData = e.target.result;
 
-      const { data: { text } } = await Tesseract.recognize(
-        imageData,
-        'eng',
-        {
-          logger: m => console.log(m)
-        }
-      );
+      const worker = await createWorker({
+        logger: m => console.log(m),
+      });
+
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng');
+      await worker.setParameters({
+        tessedit_char_whitelist: 'Q0123456789()'
+      });
+
+      const { data: { text } } = await worker.recognize(imageData);
+      await worker.terminate();
 
       console.log("Raw OCR Text:\n", text);
 
-      // Parse pattern like Q1 (3)
-      const regex = /Q\d+\s*\((\d)\)/g;
+      const regex = /Q\s*\d{1,3}[\s:.-]*\(?(\d)\)?/gi;
       let match;
       let extractedAnswers = [];
 
@@ -171,4 +159,27 @@
 
     reader.readAsDataURL(file);
   });
+
+  // Timer logic (3 hours)
+  let timeLeft = 3 * 60 * 60;
+
+  function updateTimerDisplay() {
+    let hrs = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
+    let mins = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
+    let secs = String(timeLeft % 60).padStart(2, '0');
+    document.getElementById("timer").textContent = `Time Left: ${hrs}:${mins}:${secs}`;
+  }
+
+  updateTimerDisplay();
+
+  const countdown = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+
+    if (timeLeft <= 0) {
+      clearInterval(countdown);
+      alert("⏰ Time's up! Submitting your test.");
+      document.getElementById("testForm").submit();
+    }
+  }, 1000);
 </script>
