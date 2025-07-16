@@ -129,35 +129,47 @@
     }
   }, 1000);
 
-  // OCR Logic
-  const ocrInput = document.getElementById("ocrImage");
-  const ocrStatus = document.getElementById("ocrStatus");
-  const correctAnsBox = document.querySelector("textarea[name='correctAnswers']");
+  // OCR logic
+  document.getElementById("extractBtn").addEventListener("click", async () => {
+    const fileInput = document.getElementById("imageUpload");
+    const file = fileInput.files[0];
 
-  ocrInput.addEventListener("change", async () => {
-    if (!ocrInput.files[0]) return;
-
-    ocrStatus.textContent = "🧠 Extracting answer key... Please wait";
-
-    const result = await Tesseract.recognize(ocrInput.files[0], 'eng', {
-      logger: m => {
-        if (m.status === 'recognizing text') {
-          ocrStatus.textContent = `🔍 Processing... ${Math.floor(m.progress * 100)}%`;
-        }
-      }
-    });
-
-    const text = result.data.text;
-
-    // Extract answer key numbers using regex
-    const matches = text.match(/\((\d)\)/g);
-    if (matches) {
-      const numbers = matches.map(match => Number(match.replace(/[()]/g, '')));
-      correctAnsBox.value = `[${numbers.join(", ")}]`;
-      ocrStatus.textContent = "✅ Answer key extracted successfully!";
-    } else {
-      ocrStatus.textContent = "⚠️ Could not detect answers. Please check the image.";
+    if (!file) {
+      alert("Please select an image first.");
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = async function (e) {
+      const imageData = e.target.result;
+
+      const { data: { text } } = await Tesseract.recognize(
+        imageData,
+        'eng',
+        {
+          logger: m => console.log(m)
+        }
+      );
+
+      console.log("Raw OCR Text:\n", text);
+
+      // Parse pattern like Q1 (3)
+      const regex = /Q\d+\s*\((\d)\)/g;
+      let match;
+      let extractedAnswers = [];
+
+      while ((match = regex.exec(text)) !== null) {
+        extractedAnswers.push(Number(match[1]));
+      }
+
+      if (extractedAnswers.length === 0) {
+        alert("⚠️ Could not detect answers. Please check the image.");
+      } else {
+        alert("✅ Answers extracted successfully!");
+        document.querySelector("textarea[name='correctAnswers']").value = JSON.stringify(extractedAnswers);
+      }
+    };
+
+    reader.readAsDataURL(file);
   });
 </script>
-
