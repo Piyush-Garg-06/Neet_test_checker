@@ -6,39 +6,11 @@
   }
 
   .marks-title {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 700;
     text-align: center;
     margin-top: 40px;
-    color: #34495e;
-  }
-
-  .table-wrapper {
-    padding: 40px 60px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  }
-
-  thead {
-    background: #007bff;
-    color: white;
-  }
-
-  th, td {
-    padding: 16px;
-    text-align: center;
-    font-size: 1.05rem;
-  }
-
-  tr:nth-child(even) {
-    background: #f8f9fa;
+    color: #ffffff;
   }
 
   .score-good {
@@ -50,38 +22,64 @@
     color: #e74c3c;
     font-weight: bold;
   }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  th, td {
+    padding: 14px;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  thead {
+    background-color: #007bff;
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
 </style>
 
-<h2 class="marks-title" style="color: white;">📊 Previous Test Marks</h2>
+<div class="container py-5">
+  <h2 class="marks-title">📊 Previous Test Marks</h2>
 
-<div class="table-wrapper">
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Correct</th>
-        <th>Incorrect</th>
-        <th>Skipped</th>
-        <th>Score</th>
-        <th>Accuracy</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% tests.forEach(test => {
-        const accuracy = ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1);
-        const isGood = test.totalMarksObtain >= test.totalMarks / 2;
-      %>
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered align-middle">
+      <thead>
         <tr>
-          <td><%= new Date(test.testDate).toLocaleDateString("en-IN") %></td>
-          <td><%= test.numOfCorrectAns %></td>
-          <td><%= test.numOfIncoreectAns %></td>
-          <td><%= test.numOfSkippedQues %></td>
-          <td class="<%= isGood ? 'score-good' : 'score-bad' %>">
-            <%= test.totalMarksObtain %> / <%= test.totalMarks %>
-          </td>
-          <td><%= accuracy %>%</td>
+          <th>Date</th>
+          <th>Correct</th>
+          <th>Incorrect</th>
+          <th>Skipped</th>
+          <th>Score</th>
+          <th>Accuracy</th>
         </tr>
-      <% }) %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% tests.forEach(test => {
+          const accuracy = ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1);
+          const isGood = test.totalMarksObtain >= test.totalMarks / 2;
+        %>
+          <tr>
+            <td><%= new Date(test.testDate).toLocaleDateString("en-IN") %></td>
+            <td><%= test.numOfCorrectAns %></td>
+            <td><%= test.numOfIncoreectAns %></td>
+            <td><%= test.numOfSkippedQues %></td>
+            <td class="<%= isGood ? 'score-good' : 'score-bad' %>">
+              <%= test.totalMarksObtain %> / <%= test.totalMarks %>
+            </td>
+            <td><%= accuracy %>%</td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
 </div>

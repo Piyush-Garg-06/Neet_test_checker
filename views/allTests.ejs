@@ -8,37 +8,31 @@
   .tests-heading {
     text-align: center;
     font-weight: 700;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin-top: 30px;
-    color: #2c3e50;
-  }
-
-  .tests-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 25px;
-    padding: 40px;
-    margin-top: 20px;
+    color: #ffffff;
   }
 
   .test-card {
     background: #ffffff;
     border-radius: 16px;
-    padding: 25px;
+    padding: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     text-decoration: none;
     color: #333;
+    display: block;
+    height: 100%;
   }
 
   .test-card:hover {
-    transform: scale(1.03);
+    transform: scale(1.02);
   }
 
   .card-date {
     font-weight: 600;
     color: #34495e;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-bottom: 10px;
   }
 
@@ -67,18 +61,22 @@
   }
 </style>
 
-<h2 class="tests-heading" style="color: white;">📁 All NEET Tests</h2>
+<div class="container py-5">
+  <h2 class="tests-heading">📁 All NEET Tests</h2>
 
-<div class="tests-grid">
-  <% tests.forEach(test => {
-    const accuracy = ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1);
-    const status = accuracy >= 50 ? "pass" : "fail";
-  %>
-    <a href="/tests/<%= test._id %>" class="test-card">
-      <div class="card-date">📅 <%= new Date(test.testDate).toLocaleDateString("en-IN") %></div>
-      <div>🎯 Accuracy: <%= accuracy %>%</div>
-      <div>🏆 Score: <span class="card-score"><%= test.totalMarksObtain %> / <%= test.totalMarks %></span></div>
-      <span class="status-tag <%= status %>"><%= status === 'pass' ? 'Passed' : 'Failed' %></span>
-    </a>
-  <% }) %>
+  <div class="row g-4 mt-4">
+    <% tests.forEach(test => {
+      const accuracy = ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1);
+      const status = accuracy >= 50 ? "pass" : "fail";
+    %>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <a href="/tests/<%= test._id %>" class="test-card h-100">
+          <div class="card-date">📅 <%= new Date(test.testDate).toLocaleDateString("en-IN") %></div>
+          <div>🎯 Accuracy: <%= accuracy %>%</div>
+          <div>🏆 Score: <span class="card-score"><%= test.totalMarksObtain %> / <%= test.totalMarks %></span></div>
+          <span class="status-tag <%= status %>"><%= status === 'pass' ? 'Passed' : 'Failed' %></span>
+        </a>
+      </div>
+    <% }) %>
+  </div>
 </div>

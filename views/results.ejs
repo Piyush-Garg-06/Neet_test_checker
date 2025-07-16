@@ -1,23 +1,29 @@
 <% layout("./layouts/boilerPlate") %>
 
 <style>
+  body {
+    background: linear-gradient(to right, #141e30, #243b55);
+  }
+
   .summary-container {
-    max-width: 800px;
-    margin: 50px auto;
-    background: #fdfdfd;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    padding: 40px;
+    max-width: 900px;
+    margin: 60px auto;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 40px 30px;
   }
 
   .summary-header h2 {
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 2.2rem;
     color: #2c3e50;
     margin-bottom: 10px;
   }
 
   .summary-header p {
     color: #7f8c8d;
+    font-size: 1.05rem;
   }
 
   .summary-details {
@@ -25,63 +31,97 @@
   }
 
   .summary-details .row {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
   }
 
   .summary-label {
     font-weight: 600;
-    color: #34495e;
+    color: #2c3e50;
+    font-size: 1.05rem;
   }
 
   .summary-value {
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    color: #1c1c1c;
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 40px;
   }
 
   .btn-group a {
-    margin-top: 30px;
+    padding: 12px 22px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 576px) {
+    .summary-details .row {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .summary-label, .summary-value {
+      font-size: 1rem;
+    }
+
+    .btn-group a {
+      width: 100%;
+      text-align: center;
+    }
   }
 </style>
 
 <div class="summary-container">
   <div class="summary-header text-center">
     <h2>✅ Test Submitted</h2>
-    <p>Here is your performance summary</p>
+    <p>Here is your detailed performance summary</p>
   </div>
 
   <div class="summary-details">
     <div class="row">
-      <div class="col-6 summary-label">📅 Test Date:</div>
-      <div class="col-6 summary-value"><%= test.testDate %></div>
+      <div class="summary-label">📛 Test Name:</div>
+      <div class="summary-value"><%= test.testName || "Unnamed Test" %></div>
     </div>
     <div class="row">
-      <div class="col-6 summary-label">🔢 Total Questions:</div>
-      <div class="col-6 summary-value"><%= test.numOfQues %></div>
+      <div class="summary-label">📅 Test Date:</div>
+      <div class="summary-value"><%= test.testDate %></div>
     </div>
     <div class="row">
-      <div class="col-6 summary-label">✅ Correct:</div>
-      <div class="col-6 summary-value"><%= test.numOfCorrectAns %></div>
+      <div class="summary-label">🔢 Total Questions:</div>
+      <div class="summary-value"><%= test.numOfQues %></div>
     </div>
     <div class="row">
-      <div class="col-6 summary-label">❌ Incorrect:</div>
-      <div class="col-6 summary-value"><%= test.numOfIncoreectAns %></div>
+      <div class="summary-label">✅ Correct:</div>
+      <div class="summary-value"><%= test.numOfCorrectAns %></div>
     </div>
     <div class="row">
-      <div class="col-6 summary-label">⏭ Skipped:</div>
-      <div class="col-6 summary-value"><%= test.numOfSkippedQues %></div>
+      <div class="summary-label">❌ Incorrect:</div>
+      <div class="summary-value"><%= test.numOfIncoreectAns %></div>
     </div>
     <div class="row">
-      <div class="col-6 summary-label">🎯 Accuracy:</div>
-      <div class="col-6 summary-value"><%= ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1) %>%</div>
+      <div class="summary-label">⏭ Skipped:</div>
+      <div class="summary-value"><%= test.numOfSkippedQues %></div>
     </div>
     <div class="row">
-      <div class="col-6 summary-label">🏆 Score:</div>
-      <div class="col-6 summary-value"><%= test.totalMarksObtain %> / <%= test.totalMarks %></div>
+      <div class="summary-label">🎯 Accuracy:</div>
+      <div class="summary-value"><%= ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1) %>%</div>
+    </div>
+    <div class="row">
+      <div class="summary-label">🏆 Score:</div>
+      <div class="summary-value"><%= test.totalMarksObtain %> / <%= test.totalMarks %></div>
     </div>
   </div>
 
-  <div class="text-center btn-group">
+  <div class="btn-group">
     <a href="/tests" class="btn btn-outline-primary">📁 View Previous Tests</a>
-    <a href="/" class="btn btn-outline-secondary ms-3">🏠 Home</a>
+    <a href="/" class="btn btn-outline-light">🏠 Go to Home</a>
   </div>
 </div>

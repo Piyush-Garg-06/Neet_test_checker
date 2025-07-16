@@ -2,94 +2,108 @@
 
 <style>
   body {
-    background: #f0f9ff;
+    background: linear-gradient(to right, #141e30, #243b55);
   }
 
   .test-container {
-    padding: 50px;
-    max-width: 100%;
+    padding: 50px 20px;
+    max-width: 900px;
+    margin: auto;
   }
 
   .test-box {
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   }
 
   .timer {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #e74c3c;
     text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 30px;
   }
 
   label {
-    font-weight: 500;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  input, textarea {
+    font-size: 1rem;
   }
 
   textarea {
-    width: 100%;
-    height: 120px;
-    font-size: 1rem;
-    padding: 10px;
+    resize: vertical;
+    font-family: monospace;
   }
 
   .btn-submit {
     margin-top: 30px;
     width: 100%;
+    font-size: 1.1rem;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 576px) {
+    .test-box {
+      padding: 30px 20px;
+    }
+
+    .timer {
+      font-size: 1.3rem;
+    }
   }
 </style>
 
 <div class="test-container">
   <div class="test-box">
-    <div class="timer" id="timer">Time Left: 03:00:00</div>
+    <div class="timer" id="timer">⏳ Time Left: 03:00:00</div>
 
     <form id="testForm" action="/submitTest" method="POST">
-      <div class="form-group">
+      <div class="mb-4">
         <label for="testName">📝 Test Name (Optional)</label>
-        <input type="text" name="testName" class="form-control" placeholder="e.g. Physics Mock 12" />
+        <input type="text" name="testName" class="form-control" placeholder="e.g. Physics Mock 12">
       </div>
 
-      <div class="form-group">
-        <label for="testDate">🗓 Test Date</label>
+      <div class="mb-4">
+        <label for="testDate">📅 Test Date</label>
         <input type="date" name="testDate" class="form-control" required>
       </div>
 
-      <div class="form-group">
-        <label for="numOfQues">🔢 Total Questions</label>
+      <div class="mb-4">
+        <label for="numOfQues">🔢 Total Number of Questions</label>
         <input type="number" name="numOfQues" class="form-control" required>
       </div>
 
-      <div class="form-group">
-        <label for="correctAnswers">📄 Correct Answers (comma-separated)</label>
-        <textarea name="correctAnswers" required></textarea>
+      <div class="mb-4">
+        <label for="correctAnswers">📄 Answer Key (comma-separated)</label>
+        <textarea name="correctAnswers" class="form-control" rows="4" required placeholder="e.g. 1,2,3,4,1,..."></textarea>
       </div>
 
-      <div class="form-group">
-        <label for="yourAnswers">✍️ Your Answers (comma-separated) {Type 0 where you don't know the answer}</label>
-        <textarea name="yourAnswers" required></textarea>
+      <div class="mb-4">
+        <label for="yourAnswers">✍️ Your Answers (comma-separated, use 0 for skipped)</label>
+        <textarea name="yourAnswers" class="form-control" rows="4" required placeholder="e.g. 1,0,3,4,2,..."></textarea>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-submit">✅ Submit Test</button>
+      <button type="submit" class="btn btn-success btn-submit">✅ Submit Test</button>
     </form>
   </div>
 </div>
 
 <script>
-  // 3 hours in seconds
   let timeLeft = 3 * 60 * 60;
 
   function updateTimerDisplay() {
-    let hrs = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
-    let mins = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
-    let secs = String(timeLeft % 60).padStart(2, '0');
-    document.getElementById("timer").textContent = `Time Left: ${hrs}:${mins}:${secs}`;
+    const hrs = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
+    const secs = String(timeLeft % 60).padStart(2, '0');
+    document.getElementById("timer").textContent = `⏳ Time Left: ${hrs}:${mins}:${secs}`;
   }
 
   updateTimerDisplay();

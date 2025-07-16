@@ -2,55 +2,112 @@
 
 <style>
   body {
-    background: #f1f7ff;
+    background: linear-gradient(to right, #eef2f3, #8e9eab);
+    min-height: 100vh;
   }
 
   .summary-wrapper {
-    padding: 50px;
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
   }
 
   .summary-card {
     background: white;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    padding: 40px 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   }
 
   .summary-title {
-    font-size: 2rem;
-    font-weight: bold;
+    font-size: 2.2rem;
+    font-weight: 700;
     color: #2c3e50;
     margin-bottom: 30px;
+    text-align: center;
   }
 
   .list-group-item {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    border: none;
+    padding: 12px 0;
+    color: #34495e;
+  }
+
+  .list-group-item strong {
+    color: #000;
   }
 
   .review-table {
-    margin-top: 30px;
+    margin-top: 40px;
   }
 
-  .review-table table {
+  .review-table h4 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+
+  table {
     width: 100%;
     border-collapse: collapse;
+    overflow-x: auto;
   }
 
-  .review-table th, .review-table td {
-    padding: 12px;
+  th, td {
+    padding: 14px;
     text-align: center;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
+    font-size: 1rem;
   }
 
-  .correct { color: #28a745; font-weight: bold; }
-  .wrong { color: #e74c3c; font-weight: bold; }
-  .skipped { color: #6c757d; font-weight: bold; }
+  th {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+  }
+
+  .correct {
+    color: #28a745;
+    font-weight: bold;
+  }
+
+  .wrong {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+
+  .skipped {
+    color: #6c757d;
+    font-weight: bold;
+  }
+
+  .btn-group-custom {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 576px) {
+    .summary-title {
+      font-size: 1.6rem;
+    }
+
+    th, td {
+      font-size: 0.9rem;
+    }
+
+    .list-group-item {
+      font-size: 1rem;
+    }
+  }
 </style>
 
 <div class="summary-wrapper">
   <div class="summary-card">
-    <h2 class="summary-title">📝 <%= test.testName ? test.testName : "Unnamed Test" %> – <%= new Date(test.testDate).toLocaleDateString() %></h2>
-
+    <h2 class="summary-title">📝 <%= test.testName ? test.testName : "Unnamed Test" %> – <%= new Date(test.testDate).toLocaleDateString("en-IN") %></h2>
 
     <ul class="list-group list-group-flush">
       <li class="list-group-item">✅ Correct Answers: <strong><%= test.numOfCorrectAns %></strong></li>
@@ -60,45 +117,43 @@
       <li class="list-group-item">🎯 Accuracy: <strong><%= ((test.numOfCorrectAns / test.numOfQues) * 100).toFixed(1) %>%</strong></li>
     </ul>
 
-    <div class="review-table mt-5">
+    <div class="review-table">
       <h4>📖 Question-by-Question Review</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Q.No</th>
-            <th>Your Answer</th>
-            <th>Correct Answer</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (let i = 0; i < test.correctAnswers.length; i++) { %>
+      <div class="table-responsive">
+        <table>
+          <thead>
             <tr>
-              <td><%= i + 1 %></td>
-              <td><%= test.yourAns[i] ?? "Unanswered" %></td>
-              <td><%= test.correctAnswers[i] %></td>
-              <td>
-                <% if (test.yourAns[i] == null) { %>
-                  <span class="skipped">⏭ Skipped</span>
-                <% } else if (test.yourAns[i] === test.correctAnswers[i]) { %>
-                  <span class="correct">✅ Correct</span>
-                <% } else { %>
-                  <span class="wrong">❌ Wrong</span>
-                <% } %>
-              </td>
+              <th>Q.No</th>
+              <th>Your Answer</th>
+              <th>Correct Answer</th>
+              <th>Status</th>
             </tr>
-          <% } %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% for (let i = 0; i < test.correctAnswers.length; i++) { %>
+              <tr>
+                <td><%= i + 1 %></td>
+                <td><%= test.yourAns[i] ?? "Unanswered" %></td>
+                <td><%= test.correctAnswers[i] %></td>
+                <td>
+                  <% if (test.yourAns[i] == null || test.yourAns[i] == 0) { %>
+                    <span class="skipped">⏭ Skipped</span>
+                  <% } else if (test.yourAns[i] === test.correctAnswers[i]) { %>
+                    <span class="correct">✅ Correct</span>
+                  <% } else { %>
+                    <span class="wrong">❌ Wrong</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  
-</div>
-<div class="mt-5 d-flex justify-content-center gap-4">
-  <a href="/" class="btn btn-outline-primary btn-lg">
-    🏠 Back to Home
-  </a>
-  <a href="/tests" class="btn btn-outline-success btn-lg">
-    📚 View Previous Tests
-  </a>
+
+  <div class="btn-group-custom">
+    <a href="/" class="btn btn-outline-primary btn-lg">🏠 Back to Home</a>
+    <a href="/tests" class="btn btn-outline-success btn-lg">📚 View Previous Tests</a>
+  </div>
 </div>
