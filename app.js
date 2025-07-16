@@ -97,7 +97,6 @@ app.get("/results/:id", async (req, res) => {
   }
   res.render("testSummary", { test });
 });
-a
 
 
 app.get("/tests", async (req, res) => {
