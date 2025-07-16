@@ -18,8 +18,14 @@ app.use(methodOverride("_method"));
 
 app.engine("ejs", ejsMate);
 
+
+require("dotenv").config();
+
+const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/neet";
+
+
 const main = async()=>{
-    await mongoose.connect("mongodb://127.0.0.1:27017/neet");
+    await mongoose.connect(dbUrl);
 }
 
 main()
@@ -91,7 +97,7 @@ app.get("/results/:id", async (req, res) => {
   }
   res.render("testSummary", { test });
 });
-
+a
 
 
 app.get("/tests", async (req, res) => {
