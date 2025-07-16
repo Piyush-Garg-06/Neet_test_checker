@@ -81,6 +81,18 @@
         <input type="number" name="numOfQues" class="form-control" required>
       </div>
 
+      <!-- OCR Image Upload -->
+<div class="mb-4">
+  <label for="ocrImage" class="form-label">
+    <span class="form-icon">📷</span> Upload Answer Key Image (optional):
+  </label>
+  <input type="file" class="form-control" id="ocrImage" accept="image/*">
+</div>
+
+<!-- OCR Progress -->
+<div class="mb-4" id="ocrStatus" style="font-weight: 500; color: #007bff;"></div>
+
+
       <div class="mb-4">
         <label for="correctAnswers">📄 Answer Key (comma-separated)</label>
         <textarea name="correctAnswers" class="form-control" rows="4" required placeholder="e.g. 1,2,3,4,1,..."></textarea>
@@ -96,26 +108,56 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
 <script>
+  // Existing Timer Logic
   let timeLeft = 3 * 60 * 60;
-
   function updateTimerDisplay() {
-    const hrs = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
-    const mins = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
-    const secs = String(timeLeft % 60).padStart(2, '0');
-    document.getElementById("timer").textContent = `⏳ Time Left: ${hrs}:${mins}:${secs}`;
+    let hrs = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
+    let mins = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
+    let secs = String(timeLeft % 60).padStart(2, '0');
+    document.getElementById("timer").textContent = `Time Left: ${hrs}:${mins}:${secs}`;
   }
-
   updateTimerDisplay();
-
   const countdown = setInterval(() => {
     timeLeft--;
     updateTimerDisplay();
-
     if (timeLeft <= 0) {
       clearInterval(countdown);
       alert("⏰ Time's up! Submitting your test.");
       document.getElementById("testForm").submit();
     }
   }, 1000);
+
+  // OCR Logic
+  const ocrInput = document.getElementById("ocrImage");
+  const ocrStatus = document.getElementById("ocrStatus");
+  const correctAnsBox = document.querySelector("textarea[name='correctAnswers']");
+
+  ocrInput.addEventListener("change", async () => {
+    if (!ocrInput.files[0]) return;
+
+    ocrStatus.textContent = "🧠 Extracting answer key... Please wait";
+
+    const result = await Tesseract.recognize(ocrInput.files[0], 'eng', {
+      logger: m => {
+        if (m.status === 'recognizing text') {
+          ocrStatus.textContent = `🔍 Processing... ${Math.floor(m.progress * 100)}%`;
+        }
+      }
+    });
+
+    const text = result.data.text;
+
+    // Extract answer key numbers using regex
+    const matches = text.match(/\((\d)\)/g);
+    if (matches) {
+      const numbers = matches.map(match => Number(match.replace(/[()]/g, '')));
+      correctAnsBox.value = `[${numbers.join(", ")}]`;
+      ocrStatus.textContent = "✅ Answer key extracted successfully!";
+    } else {
+      ocrStatus.textContent = "⚠️ Could not detect answers. Please check the image.";
+    }
+  });
 </script>
+
